@@ -1,4 +1,4 @@
-# Cap PLC Task Management App
+# Cap Task Management App
 This is the API for Task Management Application
 
 ## Requirements
@@ -8,16 +8,16 @@ This is the API for Task Management Application
 set up the development environment with the following steps
 
 
-Usage Instruction
+## Usage Instruction
 
 Step 1: Clone Repo from Github
 Step 2: Run Installation (Npm Install)
 Step 3: Create config.env file inside config folder
 step 4: Read Config sample to understand .env syntax
-step 5: For More Information about API endpoints, visit http://localhost:3000/api-docs/
+<!-- step 5: For More Information about API endpoints, visit http://localhost:3000/api-docs/ -->
 
 
-Folder Details And Explanation:
+## Folder Details And Explanation:
 
 project-root/
 │
