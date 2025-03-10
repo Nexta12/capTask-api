@@ -77,6 +77,10 @@ app.use(compression({ level: 6 }));
 global.logger = logger;
 
 // Register API routes
+app.get('/', (req, res)=>{
+
+  res.send("Welcome to CapTask")
+})
 app.use("/api", routes);
 
 
