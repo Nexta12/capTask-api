@@ -26,7 +26,7 @@ export const createUser  = asyncHandler(async(req, res, next ) => {
  * @access  Private (SUPER ADMIN, ADMIN and MANAGER Roles)
  */
 export const getAllUsers   = asyncHandler(async(req, res, next ) => {
-    const users = await User.find();
+    const users = await User.find({isSuperAdmin: {$ne: true}});
 
     responseHandler(res, 201, users, 'Success' )
   });
