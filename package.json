@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "deploy": "pm2 start server.js --name 'captask'",
-    "start": "pm2 restart 'captask'"
+    "deploy": "pm2 start server.js --name 'captask-api'",
+    "start": "pm2 restart 'captask-api'"
   },
   "author": "Mr Udeze Ernest",
   "license": "MIT",
