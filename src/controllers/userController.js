@@ -21,6 +21,29 @@ export const createUser  = asyncHandler(async(req, res, next ) => {
   });
 
    /**
+ * @desc    Get All Users
+ * @route   GET /api/users/getAll
+ * @access  Private (SUPER ADMIN, ADMIN and MANAGER Roles)
+ */
+export const getAllUsers   = asyncHandler(async(req, res, next ) => {
+    const users = await User.find();
+
+    responseHandler(res, 201, users, 'Success' )
+  });
+
+   /**
+ * @desc    Get A User
+ * @route   GET /api/users/getAll
+ * @access  Private (SUPER ADMIN, ADMIN and MANAGER Roles)
+ */
+export const getAUser   = asyncHandler(async(req, res, next ) => {
+  const { id } = req.params;
+    const user = await User.findById(id);
+
+    responseHandler(res, 201, user, 'Success' )
+  });
+
+   /**
  * @desc    Update a user
  * @route   PUT /api/users/:id
  * @access  Private (Admin or the user themselves)
@@ -82,5 +105,53 @@ export const deleteUser = asyncHandler(async(req, res, next ) => {
    }
 
     responseHandler(res, 200, null, ' User deleted successfully' )
+  })
+
+  export const updateUserPassword = asyncHandler(async (req, res)=>{
+    const { id } = req.params;
+    const { existingPassword, newPassword } = req.body;
+
+
+    // Get the user from the database
+    const userToUpdate = await User.findById(id);
+
+    if (!userToUpdate) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    // Authorization check
+    if (
+      req.user.id !== id &&
+      !(req.user.role === "Admin" || req.user.role === "ICT")
+    ) {
+      const error = new Error("Unauthorized Action");
+      error.statusCode = 403; // Forbidden
+      throw error;
+    }
+
+    // Verify the existing password
+    const isPasswordValid = await bcrypt.compare(
+      existingPassword,
+      userToUpdate.password
+    );
+
+    if (!isPasswordValid) {
+      const error = new Error("Invalid Password");
+      error.statusCode = 403; // Forbidden
+      throw error;
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update the user's password
+    userToUpdate.password = hashedPassword;
+    await userToUpdate.save(); // Save the updated user document
+
+    responseHandler(res, 200, null, 'Password updated successfully' )
+
   })
   

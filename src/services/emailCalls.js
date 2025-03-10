@@ -1,19 +1,19 @@
-import asyncHandler from "../utils/asyncHandler.js";
-import { SendDailyTaskReport, SendPasswordToUser } from "./emailTemplate.js";
+
+import { ForgotPasswordTemplate, SendDailyTaskReport, SendPasswordToUser } from "./emailTemplate.js";
 import transporter from "../services/emailServer.js"
 
-export const sendDailyReportEmail = asyncHandler(async(req, res, next)=>{
+export const sendDailyReportEmail = async(user)=>{
   const today = new Date();
     const mailOptions = {
         from: `"CapTask" <${process.env.USER_EMAIL}>`,
-        to: process.env.departmentHeadEmail,
+        to: user.email,
         subject: `Employees Daily Task Report - ${today.toLocaleDateString("en-GB", {
           weekday: "long",
           year: "numeric",
           month: "long",
           day: "numeric",
         })}`,
-        html: SendDailyTaskReport(),
+        html: SendDailyTaskReport(user),
         headers: {
           "List-Unsubscribe":
             "<https://captask.com/unsubscribe>, <mailto:unsubscribe@captask.com>",
@@ -23,7 +23,7 @@ export const sendDailyReportEmail = asyncHandler(async(req, res, next)=>{
       await transporter.sendMail(mailOptions);
       logger.info('Daily Report Sent to Department head')
 
-})
+}
 
 export const sendUserPassword = async(user)=>{
     const mailOptions = {
@@ -40,4 +40,25 @@ export const sendUserPassword = async(user)=>{
       await transporter.sendMail(mailOptions);
       logger.info('Password Sent to registered user')
 
-}
+    };
+
+    export const ForgotPasswordEmail = async (otp, email) => {
+      try {
+  
+        const mailOptions = {
+          from: `"CapTask" <${process.env.USER_EMAIL}>`,
+          to: email,
+          subject: "Password Reset OTP",
+          html: ForgotPasswordTemplate(otp),
+          headers: {
+            "List-Unsubscribe":
+              "<https://captask.com/unsubscribe>, <mailto:unsubscribe@captask.com>",
+          },
+        };
+  
+        await transporter.sendMail(mailOptions);
+        logger.info('OTP Sent to registered user')
+      } catch (err) {
+        console.log(err)
+      }
+    }

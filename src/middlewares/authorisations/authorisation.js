@@ -1,4 +1,5 @@
 import asyncHandler from "../../utils/asyncHandler.js";
+import jwt from 'jsonwebtoken'
 
 export const emailToLowerCase = (req, res, next) => {
     if (req.body.email) {
@@ -46,5 +47,19 @@ export const emailToLowerCase = (req, res, next) => {
       }
     }
   };
+  export const checkJwt = (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token)
+      return res
+        .status(401)
+        .send({ message: "Authorization header not provided" });
 
+    try {
+      const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET); // Ensure this matches your token secret
+      req.jwtPayload = payload; // Add user info from the token
+      next(); // Proceed if token is valid
+    } catch (err) {
+      return res.status(401).send({ message: "Unauthorized: Invalid token" });
+    }
+  }
 

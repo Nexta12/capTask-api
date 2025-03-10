@@ -10,16 +10,17 @@ export const TaskFormValidator = asyncHandler(async (req, res, next) => {
          error.statusCode = 400; 
          throw error;
       }
+      if (!hoursWorked || hoursWorked === "") {
+        const error = new Error("Total Hours worked is required");
+        error.statusCode = 400; 
+        throw error;
+        }
     if (!description || description === "") {
       const error = new Error("Task description is required");
       error.statusCode = 400; 
       throw error;
       }
-    if (!hoursWorked || hoursWorked === "") {
-      const error = new Error("Total Hours worked is required");
-      error.statusCode = 400; 
-      throw error;
-      }
+ 
 
       if (creationDate) {
          const date = new Date(creationDate);

@@ -14,7 +14,7 @@ export function initialize(passport) {
           if (!user) {
             return done(null, false, { message: "Wrong Credentials" });
           }
-
+      
           // Verify password
           const isPasswordValid = await bcrypt.compare(password, user.password);
 

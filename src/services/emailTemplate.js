@@ -1,5 +1,5 @@
 const emailHeader = (title) => {
-    return `
+  return `
    <!doctype html>
   <html lang="en-US">
   
@@ -43,10 +43,10 @@ const emailHeader = (title) => {
                                               ${title}
                                           </h1>
         `;
-  };
-  
-  const emailFooter = () => {
-    return `
+};
+
+const emailFooter = () => {
+  return `
          <p
                                               style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left; font-weight: bold;">
                                               Best Regards
@@ -98,33 +98,41 @@ const emailHeader = (title) => {
   </html>
     
         `;
-  };
+};
 
-  export const SendDailyTaskReport = () => {
-    return `
+export const SendDailyTaskReport = (user) => {
+  return `
        ${emailHeader("Employees Daily Tasks Report")}
 
         <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left; font-weight: bold;">
-           Dear Sir,
+           Dear ${user.firstName},
        </p>
 
         <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left;">
-          Below is the Attachment Link for today's employees Task report
+          Find below the link for today report from all employees in ${user.department} department
         </p>
 
-      
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
            <p
-            style="background:#20104B;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 14px;display:inline-block;border-radius:50px; letter-spacing:1px;"><a href=${process.env.BACKEND_BASE_URL
-            }/api/task/excel/export-today-task} style="text-decoration: none; color: white;" > Download Report </a>
+            style="background:#20104B;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 14px;display:inline-block;border-radius:50px; letter-spacing:1px;"><a href=${
+              process.env.BACKEND_BASE_URL
+            }/api/task/excel/export-today-task?department=${user.department} style="text-decoration: none; color: white;" >Download Excel</a>
            </p>
-          
+           <p
+            style="background:#1e7bc4;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 14px;display:inline-block;border-radius:50px; letter-spacing:1px;"><a href=${
+              process.env.BACKEND_BASE_URL
+            }/api/task/exportPdf/all-today-tasks?department=${user.department} style="text-decoration: none; color: white;" >Download PDF</a>
+           </p>
+           </div>
+
+    
     
         ${emailFooter()}
      `;
-  }
+};
 
-  export const SendPasswordToUser = (user) => {
-    return `
+export const SendPasswordToUser = (user) => {
+  return `
        ${emailHeader("Account Login Details")}
 
         <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left; font-weight: bold;">
@@ -154,4 +162,27 @@ const emailHeader = (title) => {
           
         ${emailFooter()}
      `;
-  }
+};
+
+export const ForgotPasswordTemplate = (otp) => {
+    return `
+       ${emailHeader("Password Reset OTP")}
+
+      
+        <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left;">
+         You or someone else have requested for a password reset on our portal, kindly disregard this email if you did not make the request.
+        </p>
+        <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left;">
+          Please use this OTP: <strong>${otp}</strong> to reset your password.
+        </p>
+
+        <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left;">
+          Kindly know that this OTP expires in 15 Minutes
+        </p>
+        <p style="color:#455056; font-size:15px;line-height:24px; margin-top:10px; text-align: left;">
+          We appreciate your patience and look forward to assisting you shortly.
+        </p>
+
+        ${emailFooter()}
+     `;
+  };

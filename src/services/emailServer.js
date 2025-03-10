@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 config({ path: "./config/.env" });
 import nodemailer from "nodemailer";
+import { checkInternetConnection } from "../utils/internetAccess.js";
 
 
 // Email Transporter
@@ -19,14 +20,20 @@ const transporter = nodemailer.createTransport({
 
 
 //Verify the connection configuration
-transporter.verify((error, success) => {
-
+transporter.verify(async (error, success) => {
+  const isOnline = await checkInternetConnection();
+  if (!isOnline) {
+    return logger.info("No Internet Access");
+  }
   if (error) {
-    console.log(error)
+    if (error.message.includes("Invalid login")) {
+      logger.error("Gmail SMTP Login Refused");
+    } else {
+      console.log(error.message);
+    }
   } else {
     logger.info("Server is ready to send emails!", success);
   }
 });
-
 export default transporter;
 

@@ -5,7 +5,7 @@ const errorHandler = (err, req, res, next) => {
   const message = err.message || "Internal server error";
 
   // Log the error for debugging
-  logger.error(err.message);
+   logger.error(err.message);
 
   // Send standardized error response
   return responseHandler(res, statusCode, null, message,  false);

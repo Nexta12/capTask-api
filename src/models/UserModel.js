@@ -5,12 +5,13 @@ const userSchema = new mongoose.Schema({
   title: {type: String, enum: TITLES_VALUES, default: TITLES.MR},
   firstName: {type: String, required: true, trim: true},
   lastName: {type: String, required: true, trim: true},
-  email: {type: String, required: true, trim: true, lowercase: true, unique: true, select: false},
+  email: {type: String, required: true, trim: true, lowercase: true, unique: true, },
   password: {type: String, min: 6 },
-  portfolio: {type: String},
-  lastLogin: Date,
   description: { type: String, lowercase: true },
+  phone: { type: String},
   department: { type: String, lowercase: true },
+  position: { type: String, enum: ['Department Head', 'None'], default: 'None' },
+  address: { type: String},
   role: {type: String, enum: ROLE_VALUES, default: ROLES.EMPLOYEE},
   isSuperAdmin: {type: Boolean, default: false}
 
