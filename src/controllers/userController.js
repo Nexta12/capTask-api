@@ -56,12 +56,12 @@ export const updateUser  = asyncHandler(async(req, res, next ) => {
     req.body.password = await bcrypt.hash(req.body.password, 10);
   }
 
-    // Prevent employees from updating roles
-  if (req.body.role && req.user.role === ROLES.EMPLOYEE) {
-    const error = new Error("Unauthorized Action: Employees cannot update roles.");
-    error.statusCode = 403; // Forbidden
-    throw error;
-  }
+  //   // Prevent employees from updating roles
+  // if (req.body.role && req.user.role === ROLES.EMPLOYEE) {
+  //   const error = new Error("Unauthorized Action: Employees cannot update roles.");
+  //   error.statusCode = 403; // Forbidden
+  //   throw error;
+  // }
     
    // Update the user
    const updatedUser = await User.findByIdAndUpdate(
